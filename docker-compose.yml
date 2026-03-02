@@ -1,0 +1,23 @@
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: shopfully
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: shopfully
+    ports:
+      - "5432:5432"
+  etl:
+    build: .
+    depends_on:
+      - postgres
+    environment:
+      PG_HOST: postgres
+      PG_PORT: 5432
+      PG_DB: postgres
+      PG_USER: shopfully
+      PG_PASSWORD: test
+      CSV_PATH: /app/data/store_visits.csv
+    volumes:
+      - .:/app
+    command: ["sleep", "infinity"]
